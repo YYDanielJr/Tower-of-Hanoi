@@ -20,10 +20,16 @@ int how_many_numbers(int);
 void viewlog();
 void datascreen();
 void delete_data(int);
+void search_by_disk(int);
+void SBD_datascreen();
+void sort_up();
+void sort_down();
 
 //========================================================================
 
 int hanoi[4][65];
+int steps[1000], disks[1000];
+double times[1000];
 
 //========================================================================
 
@@ -87,6 +93,7 @@ void datascreen()
 	cout << "1、按照移动盘数单独查找" << endl;
 	cout << "2、删除一条游戏记录" << endl;
 	cout << "3、删除所有游戏记录" << endl;
+	cout << "4、返回" << endl;
 	cout << "你想做什么？" << endl;
 }
 
@@ -210,8 +217,6 @@ void viewlog()
 		return;
 	}
 
-	int steps[1000], disks[1000];
-	double times[1000];
 	int count = 0;
 	for (int i = 1; !fin.eof(); i++)
 	{
@@ -243,6 +248,10 @@ void viewlog()
 		cin >> choice;
 		if (choice == 1)
 		{
+			cout << "你想要查找几个盘子的数据？" << endl;
+			int disk;
+			cin >> disk;
+
 			datascreen();
 		}
 		else if (choice == 2)
@@ -251,18 +260,18 @@ void viewlog()
 			cout << "你想要删除哪一行数据？" << endl;
 			while (1)
 			{
-                cin >> b;
-		    	if (b <= count)
-			    {
-				    delete_data(b);
-    			    datascreen();
-	    		}
-		    	else
-    			{
-	    			cout << "该行不存在。请重新输入：" << endl;
-    			}
+				cin >> b;
+				if (b <= count)
+				{
+					delete_data(b);
+					datascreen();
+				}
+				else
+				{
+					cout << "该行不存在。请重新输入：" << endl;
+				}
 			}
-			
+
 		}
 		else if (choice == 3)
 		{
@@ -273,10 +282,83 @@ void viewlog()
 				remove("data.dyy");
 			return;
 		}
-	    else
+		else if (choice == 4)
+			return;
+		else
 			cout << "无法识别您输入的序号。请重新输入一个在列表内的序号：" << endl;	    
 	}
 	
+}
+
+void search_by_disk(int disk)
+{
+	system("cls");
+	ifstream fin("data.dyy");
+	if (!fin.is_open())
+	{
+		cout << "没有可用的游戏数据。" << endl;
+		system("pause");
+		return;
+	}
+
+	int count = 0;
+	int temp = 1;
+	for (int i = 1; !fin.eof(); i++)
+	{
+		if (disks[i] == disk)
+		{
+		    fin >> disks[temp] >> steps[temp] >> times[temp];
+		    count++;
+			temp++;
+		}
+
+	}
+	cout << "你的游戏数据：" << endl;
+	cout << "    盘子：" << "      " << "步数：" << "      " << "时间：" << endl;
+	for (int i = 1; i <= count; i++)
+	{
+		cout << i << ".";
+		for (int j = 0; j < 3 - how_many_numbers(i); j++)
+			cout << ' ';
+		cout << disks[i];
+		for (int j = 0; j < 12 - how_many_numbers(disks[i]); j++)
+			cout << ' ';
+		cout << steps[i];
+		for (int j = 0; j < 12 - how_many_numbers(steps[i]); j++)
+			cout << ' ';
+		cout << times[i] << "s" << endl;
+	}
+	cout << endl << endl;
+	fin.close();
+	SBD_datascreen();
+	int choice;
+	cin >> choice;
+	while (1)
+	{
+		if (choice == 1)
+		{
+
+		}
+	}
+}
+
+void sort_up()
+{
+
+}
+
+void sort_down()
+{
+
+}
+
+void SBD_datascreen()
+{
+	cout << "1、按照时间由小到大排序" << endl;
+	cout << "2、按照时间由大到小排序" << endl;
+	cout << "3、按照步数由小到大排序" << endl;
+	cout << "4、按照步数由大到小排序" << endl;
+	cout << "5、返回" << endl;
 }
 
 void delete_data(int line)
