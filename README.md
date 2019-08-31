@@ -5,4 +5,6 @@
 对了，运行macOS/Linux的同学们，把所有的： <br>
 system("pause"); <br>
 system("cls"); <br>
-改掉，改成该系统对应的暂停和清屏命令。
+改掉，改成该系统对应的暂停和清屏命令。<br>
+P.S.我刚刚用Dev-CPP打开了hanoi.cpp，发现中文乱码？😂 <br>
+不知道你们下载下来大概是个什么情况。
