@@ -22,8 +22,10 @@ void datascreen();
 void delete_data(int);
 void search_by_disk(int);
 void SBD_datascreen();
-void sort_up();
-void sort_down();
+void sort_up(int, int);
+void sort_down(int, int);
+void swap_int(int &, int &);
+void swap_double(double &, double &);
 
 //========================================================================
 
@@ -294,12 +296,6 @@ void search_by_disk(int disk)
 {
 	system("cls");
 	ifstream fin("data.dyy");
-	if (!fin.is_open())
-	{
-		cout << "没有可用的游戏数据。" << endl;
-		system("pause");
-		return;
-	}
 
 	int count = 0;
 	int temp = 1;
@@ -311,8 +307,15 @@ void search_by_disk(int disk)
 		    count++;
 			temp++;
 		}
-
 	}
+
+	if (count == 0)
+	{
+		cout << "没有可用的游戏数据。" << endl;
+		system("pause");
+		return;
+	}
+
 	cout << "你的游戏数据：" << endl;
 	cout << "    盘子：" << "      " << "步数：" << "      " << "时间：" << endl;
 	for (int i = 1; i <= count; i++)
@@ -337,19 +340,83 @@ void search_by_disk(int disk)
 	{
 		if (choice == 1)
 		{
-
+			sort_down(2, count);
+			cout << "你的游戏数据：" << endl;
+			cout << "    盘子：" << "      " << "步数：" << "      " << "时间：" << endl;
+			for (int i = 1; i <= count; i++)
+			{
+				cout << i << ".";
+				for (int j = 0; j < 3 - how_many_numbers(i); j++)
+					cout << ' ';
+				cout << disks[i];
+				for (int j = 0; j < 12 - how_many_numbers(disks[i]); j++)
+					cout << ' ';
+				cout << steps[i];
+				for (int j = 0; j < 12 - how_many_numbers(steps[i]); j++)
+					cout << ' ';
+				cout << times[i] << "s" << endl;
+				SBD_datascreen();
+			}
 		}
 	}
 }
 
-void sort_up()
+void sort_up(int ch, int count)
 {
+	if (ch == 1)
+		for (int i = 1; i <= count; i++)
+			for (int j = 1; j <= count - i; j++)
+				if (times[j] < times[j + 1])
+				{
+					swap_double(times[j], times[j + 1]);
+					swap_int(steps[j], steps[j + 1]);
+				}
 
+	if (ch == 2)
+		for (int i = 1; i <= count; i++)
+			for (int j = 1; j <= count - i; j++)
+				if (steps[j] < steps[j + 1])
+				{
+					swap_double(times[j], times[j + 1]);
+					swap_int(steps[j], steps[j + 1]);
+				}
 }
 
-void sort_down()
+void sort_down(int ch, int count)
 {
+	if (ch == 1)
+		for (int i = 1; i <= count; i++)
+			for (int j = 1; j <= count - i; j++)
+				if (times[j] > times[j + 1])
+				{
+					swap_double(times[j], times[j + 1]);
+					swap_int(steps[j], steps[j + 1]);
+				}
 
+	if (ch == 2)
+		for (int i = 1; i <= count; i++)
+			for (int j = 1; j <= count - i; j++)
+				if (steps[j] > steps[j + 1])
+				{
+					swap_double(times[j], times[j + 1]);
+					swap_int(steps[j], steps[j + 1]);
+				}
+}
+
+void swap_int(int &a, int &b)
+{
+	int t;
+	t = a; 
+	a = b;
+	b = t;
+}
+
+void swap_double(double& a, double& b)
+{
+    double t;
+	t = a; 
+	a = b;
+	b = t;
 }
 
 void SBD_datascreen()
