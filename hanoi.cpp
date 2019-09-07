@@ -26,6 +26,7 @@ void sort_up(int, int);
 void sort_down(int, int);
 void swap_int(int &, int &);
 void swap_double(double &, double &);
+void gamedata_out(int);
 
 //========================================================================
 
@@ -208,6 +209,26 @@ void process()
     system("pause");
 }
 
+void gamedata_out(int count)
+{
+	cout << "你的游戏数据：" << endl;
+	cout << "    盘子：" << "      " << "步数：" << "      " << "时间：" << endl;
+	for (int i = 1; i <= count; i++)
+	{
+		cout << i << ".";
+		for (int j = 0; j < 3 - how_many_numbers(i); j++)
+			cout << ' ';
+		cout << disks[i];
+		for (int j = 0; j < 12 - how_many_numbers(disks[i]); j++)
+			cout << ' ';
+		cout << steps[i];
+		for (int j = 0; j < 12 - how_many_numbers(steps[i]); j++)
+			cout << ' ';
+		cout << times[i] << "s" << endl;
+	}
+	cout << endl << endl;
+}
+
 void viewlog()
 {
 	system("cls");
@@ -225,22 +246,7 @@ void viewlog()
 		fin >> disks[i] >> steps[i] >> times[i];
 		count++;
 	}
-	cout << "你的游戏数据：" << endl;
-	cout << "    盘子：" << "      " << "步数：" << "      " << "时间：" << endl;
-	for (int i = 1; i <= count; i++)
-	{
-		cout << i << ".";
-		for (int j = 0; j < 3 - how_many_numbers(i); j++)
-			cout << ' ';
-		cout << disks[i];
-		for (int j = 0; j < 12 - how_many_numbers(disks[i]); j++)
-			cout << ' ';
-		cout << steps[i];
-        for (int j = 0; j < 12 - how_many_numbers(steps[i]); j++)
-			cout << ' ';
-		cout << times[i] << "s" << endl;
-	}
-	cout << endl << endl;
+	gamedata_out(count);
 	fin.close();
 	datascreen();
 	int choice;
@@ -253,7 +259,7 @@ void viewlog()
 			cout << "你想要查找几个盘子的数据？" << endl;
 			int disk;
 			cin >> disk;
-
+			search_by_disk(disk);
 			datascreen();
 		}
 		else if (choice == 2)
@@ -316,48 +322,42 @@ void search_by_disk(int disk)
 		return;
 	}
 
-	cout << "你的游戏数据：" << endl;
-	cout << "    盘子：" << "      " << "步数：" << "      " << "时间：" << endl;
-	for (int i = 1; i <= count; i++)
-	{
-		cout << i << ".";
-		for (int j = 0; j < 3 - how_many_numbers(i); j++)
-			cout << ' ';
-		cout << disks[i];
-		for (int j = 0; j < 12 - how_many_numbers(disks[i]); j++)
-			cout << ' ';
-		cout << steps[i];
-		for (int j = 0; j < 12 - how_many_numbers(steps[i]); j++)
-			cout << ' ';
-		cout << times[i] << "s" << endl;
-	}
-	cout << endl << endl;
+	gamedata_out(count);
 	fin.close();
-	SBD_datascreen();
-	int choice;
-	cin >> choice;
+
 	while (1)
-	{
+	{	SBD_datascreen();
+	    int choice;
+	    cin >> choice;
 		if (choice == 1)
 		{
-			sort_down(2, count);
-			cout << "你的游戏数据：" << endl;
-			cout << "    盘子：" << "      " << "步数：" << "      " << "时间：" << endl;
-			for (int i = 1; i <= count; i++)
-			{
-				cout << i << ".";
-				for (int j = 0; j < 3 - how_many_numbers(i); j++)
-					cout << ' ';
-				cout << disks[i];
-				for (int j = 0; j < 12 - how_many_numbers(disks[i]); j++)
-					cout << ' ';
-				cout << steps[i];
-				for (int j = 0; j < 12 - how_many_numbers(steps[i]); j++)
-					cout << ' ';
-				cout << times[i] << "s" << endl;
-				SBD_datascreen();
-			}
+			sort_down(1, count);
+			gamedata_out(count);
 		}
+
+		else if (choice == 2)
+		{
+			sort_up(1, count);
+			gamedata_out(count);
+		}
+
+		else if (choice == 3)
+		{
+			sort_down(2, count);
+			gamedata_out(count);
+		}
+
+		else if (choice == 4)
+		{
+			sort_up(2, count);
+			gamedata_out(count);
+		}
+
+		else if (choice == 5)
+			break;
+
+		else
+			cout << "无法识别您输入的序号。请重新输入一个在列表内的序号：";
 	}
 }
 
